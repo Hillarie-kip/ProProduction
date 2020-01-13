@@ -137,6 +137,9 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                         if (SP_Year.getSelectedItem().toString().equals("2019")) {
                             Year = "B";
                         }
+                        if (SP_Year.getSelectedItem().toString().equals("2020")) {
+                            Year = "C";
+                        }
 
                         if (SP_Month.getSelectedItem().toString().equals("The Month")) {
                             Toast.makeText(CheckerActivity.this, "choose the Month", Toast.LENGTH_SHORT).show();

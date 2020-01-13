@@ -3,8 +3,8 @@ package com.protoenergy.proproduction.common;
 public class Constants {
     // web service url constants
     public class URLs {
-        //public static final String BASE_URL = "http://sync.protoenergy.com/api/";
-        public static final String BASE_URL = "http://192.168.100.15/protoapi/api/";
+        public static final String BASE_URL = "http://sync.protoenergy.com/api/";
+       // public static final String BASE_URL = "http://192.168.100.15/protoapi/api/";
 
         public static final String LOGIN = BASE_URL +"production/login";
 

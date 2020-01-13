@@ -114,6 +114,10 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                         if (SP_Year.getSelectedItem().toString().equals("2019")) {
                             Year = "B";
                         }
+                        if (SP_Year.getSelectedItem().toString().equals("2020")) {
+                            Year = "C";
+                        }
+
 
                         if (SP_Month.getSelectedItem().toString().equals("The Month")) {
                             Toast.makeText(MakerActivity.this, "choose the Month", Toast.LENGTH_SHORT).show();
