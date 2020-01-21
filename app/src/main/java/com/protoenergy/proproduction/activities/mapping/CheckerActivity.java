@@ -196,7 +196,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
-                                            if (tareweight >= 8.2 && tareweight <= 9.3) {
+                                            if (tareweight >= 8.2 && tareweight <= 9.5) {
                                                 saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6 kg", Toast.LENGTH_SHORT).show();
@@ -314,7 +314,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
-                                            if (tareweight >= 8.2 && tareweight <= 9.3) {
+                                            if (tareweight >= 8.2 && tareweight <= 9.5) {
                                                 UpdateQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6KG", Toast.LENGTH_SHORT).show();
