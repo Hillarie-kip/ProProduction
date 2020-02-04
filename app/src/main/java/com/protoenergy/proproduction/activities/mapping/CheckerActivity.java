@@ -368,7 +368,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
         pd2.setTitle("Checker Data");
         pd2.setMessage("Saving Checker Data");
         pd2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + preferenceHelper.getUserID() + "&CylinderCode=" + QRCode,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + "22" + "&CylinderCode=" + QRCode,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -496,7 +496,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
         pd2.setTitle("Checker ...");
         pd2.setMessage("Saving Info !...");
         pd2.show();
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + preferenceHelper.getUserID() + "&CylinderCode=" + QRCode
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + "22" + "&CylinderCode=" + QRCode
                 , null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -625,7 +625,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
-                params.put("UpdatedBy", preferenceHelper.getUserID());
+                params.put("UpdatedBy", "22");
 
 
                 return params;

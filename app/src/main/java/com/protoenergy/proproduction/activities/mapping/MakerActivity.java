@@ -287,7 +287,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
-                params.put("CreatedBy", preferenceHelper.getUserID());
+                params.put("CreatedBy", "11");
 
 
                 return params;
