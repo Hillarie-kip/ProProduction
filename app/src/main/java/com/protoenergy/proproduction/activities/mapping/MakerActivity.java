@@ -116,7 +116,6 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                             Year = "C";
                         }
 
-
                         if (SP_Month.getSelectedItem().toString().equals("The Month")) {
                             Toast.makeText(MakerActivity.this, "choose the Month", Toast.LENGTH_SHORT).show();
                         } else {
@@ -172,7 +171,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
-                                            if (tareweight >= 8.2 && tareweight <= 9.5) {
+                                            if (tareweight >= 7.7 && tareweight <= 9.5) {
                                                 saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 6 KG", Toast.LENGTH_SHORT).show();
@@ -181,7 +180,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
 
                                         if (MaterialDescription.contains("13KG")) {
 
-                                            if (tareweight >= 12.8 && tareweight <= 13.4) {
+                                            if (tareweight >= 12.0 && tareweight <= 14.0) {
                                                 saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 13 KG", Toast.LENGTH_SHORT).show();
@@ -287,7 +286,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
-                params.put("CreatedBy", "11");
+                params.put("CreatedBy", preferenceHelper.getUserID());
 
 
                 return params;
@@ -338,8 +337,6 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
     }
 
     private void getOrderNumbers(JSONArray j) {
-        //Traversing through all the items in the json array
-        //  outlets.add(initialstring);
         outlets.add(initialstring);
 
 

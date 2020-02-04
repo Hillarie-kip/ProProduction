@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_8sdp"
-             android:layout_marginRight="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_8sdp"
             app:cardCornerRadius="5dp">
 
             <LinearLayout
@@ -184,6 +184,7 @@
 
 
                 <EditText
+                    android:maxLength="6"
                     android:fontFamily="@font/bree_serif"
                     android:inputType="number"
                     android:text=""
@@ -219,6 +220,7 @@
 
                 <EditText
                     android:fontFamily="@font/bree_serif"
+                    android:maxLength="10"
 
                     android:text=""
                     android:id="@+id/et_qr"
@@ -253,7 +255,7 @@
 
                 <EditText
                     android:fontFamily="@font/bree_serif"
-
+                    android:maxLength="4"
                     android:text=""
                     android:inputType="numberDecimal"
                     android:id="@+id/et_tare"
@@ -269,31 +271,31 @@
 
         </androidx.cardview.widget.CardView>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <Button
-        android:fontFamily="@font/bree_serif"
-        android:id="@+id/btn_Clear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/_20sdp"
-        android:background="@drawable/button_clear"
-        android:text="Clear  "
-        android:textColor="@color/white" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:fontFamily="@font/bree_serif"
+                android:id="@+id/btn_Clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_20sdp"
+                android:background="@drawable/button_clear"
+                android:text="Clear  "
+                android:textColor="@color/white" />
 
-    <Button
-        android:fontFamily="@font/bree_serif"
-        android:id="@+id/btn_OpenSale"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/_20sdp"
-        android:background="@drawable/button_clear"
-        android:text="ADD  "
-        android:textColor="@color/white" />
-</LinearLayout>
+            <Button
+                android:fontFamily="@font/bree_serif"
+                android:id="@+id/btn_OpenSale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_20sdp"
+                android:background="@drawable/button_clear"
+                android:text="ADD  "
+                android:textColor="@color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 

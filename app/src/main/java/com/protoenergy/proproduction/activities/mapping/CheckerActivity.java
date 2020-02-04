@@ -3,9 +3,12 @@ package com.protoenergy.proproduction.activities.mapping;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +47,6 @@ import static com.protoenergy.proproduction.common.Constants.URLs.BASE_URL;
 import static com.protoenergy.proproduction.common.Constants.URLs.GET_ORDERNUMBERS;
 import static com.protoenergy.proproduction.common.Constants.URLs.URL_UPDATECHECKER;
 
-
 public class CheckerActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     private Spinner SP_ProductionNumber, SP_Year, SP_Month;
@@ -65,8 +67,8 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
     double tareweight;
     PreferenceHelper preferenceHelper;
-    LinearLayout LADD,LUPDATE;
-    Button btnClear1,btnClear2;
+    LinearLayout LADD, LUPDATE;
+    Button btnClear1, btnClear2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,9 +116,6 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                 ETTare.setText("");
             }
         });
-
-
-
 
 
         btnSale.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +182,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
                             if (ETSerialNumber.getText().toString().length() != 6) {
                                 Toast.makeText(CheckerActivity.this, "Serial Number is 6", Toast.LENGTH_SHORT).show();
-                            } else  {
+                            } else {
                                 SerialNumber = ETSerialNumber.getText().toString();
                                 if ((ETQRCode.getText().toString().length() != 10) && (ETQRCode.getText().toString().length() != 6)) {
                                     Toast.makeText(CheckerActivity.this, "Check the QR", Toast.LENGTH_SHORT).show();
@@ -196,7 +195,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
-                                            if (tareweight >= 8.2 && tareweight <= 9.5) {
+                                            if (tareweight >= 7.7 && tareweight <= 9.5) {
                                                 saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6 kg", Toast.LENGTH_SHORT).show();
@@ -205,7 +204,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
                                         if (MaterialDescription.contains("13KG")) {
 
-                                            if (tareweight >= 12.8 && tareweight <= 13.4) {
+                                            if (tareweight >= 12.0 && tareweight <= 14.0) {
                                                 saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 13 kg", Toast.LENGTH_SHORT).show();
@@ -314,7 +313,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
-                                            if (tareweight >= 8.2 && tareweight <= 9.5) {
+                                            if (tareweight >= 7.7 && tareweight <= 9.5) {
                                                 UpdateQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6KG", Toast.LENGTH_SHORT).show();
@@ -323,7 +322,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
                                         if (MaterialDescription.contains("13KG")) {
 
-                                            if (tareweight >= 12.8 && tareweight <= 13.4) {
+                                            if (tareweight >= 12.0 && tareweight <= 14.0) {
                                                 UpdateQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 13KG", Toast.LENGTH_SHORT).show();
@@ -333,11 +332,11 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("50KG")) {
 
 
-                                                if (tareweight >= 36.0 && tareweight <= 40.0) {
-                                                    saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
-                                                } else {
-                                                    Toast.makeText(CheckerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
-                                                }
+                                            if (tareweight >= 36.0 && tareweight <= 40.0) {
+                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
+                                            } else {
+                                                Toast.makeText(CheckerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
+                                            }
 
                                         }
                                     }
@@ -364,139 +363,12 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
     }
 
-    private void saveQR1(String orderNumber, String year, String month, String serialNumber, String QRCode, double tareweight) {
-        pd2.setTitle("Checker Data");
-        pd2.setMessage("Saving Checker Data");
-        pd2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + "22" + "&CylinderCode=" + QRCode,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        pd2.dismiss();
-
-                        Log.d("CheckerResponse", response);
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            boolean error = obj.getBoolean("Error");
-                            String message = obj.getString("Message");
-                            Toast.makeText(CheckerActivity.this, "" + response, Toast.LENGTH_SHORT).show();
-                            if (!error) {
-                                Toast.makeText(CheckerActivity.this, message, Toast.LENGTH_SHORT).show();
-                                ETSerialNumber.setText("");
-                                ETQRCode.setText("");
-                                ETTare.setText("");
-                                SP_Year.getItemAtPosition(-1);
-                                SP_Month.getItemAtPosition(-1);
-                                LUPDATE.setVisibility(View.GONE);
-                                LADD.setVisibility(View.VISIBLE);
-
-                            } else {
-                                AlertDialogCreateNoCylinder();
-                                Toast.makeText(CheckerActivity.this, "No such Cylinder", Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        } catch (JSONException e) {
-                            pd.dismiss();
-                            e.printStackTrace();
-                            btnUpdate.setVisibility(View.VISIBLE);
-                            JSONArray jsonarray = null;
-                            try {
-                                jsonarray = new JSONArray(response);
-                                for (int i = 0; i < jsonarray.length(); i++) {
-                                    JSONObject jsonobject = jsonarray.getJSONObject(i);
-                                    String ProductionOrder = jsonobject.getString("ProductionOrder");
-                                    String SerialNumber = jsonobject.getString("SerialNumber");
-                                    String TagQRCode = jsonobject.getString("TagQRCode");
-                                    String TagVisible = jsonobject.getString("TagVisible");
-                                    String Year = jsonobject.getString("Year");
-                                    String Month = jsonobject.getString("Month");
-                                    String EmptyWeight = jsonobject.getString("EmptyWeight");
-                                    AlertDialogCreate(SerialNumber, TagQRCode, TagVisible, EmptyWeight);
-                                }
-
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-
-                            }
-
-                        }
-                    }
-
-                    private void AlertDialogCreateNoCylinder() {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckerActivity.this);
-                        alertDialogBuilder.setTitle("No Such Cylinder Info!!");
-                        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
-                        alertDialogBuilder.setMessage("Please Re-Check...");
-                        alertDialogBuilder//.setMessage("perform today's stock level report.")
-                                .setCancelable(false)
-                                .setPositiveButton("Check", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                    }
-
-                                })
-                                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-
-                                    }
-                                });
-
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
-
-                    }
-
-                    private void AlertDialogCreate(String serialNumber, String tagQRCode, String tagVisible, String emptyWeight) {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckerActivity.this);
-                        alertDialogBuilder.setTitle("Wrong Cylinder Info!!");
-                        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
-                        alertDialogBuilder.setMessage("Please Update...");
-                        alertDialogBuilder//.setMessage("perform today's stock level report.")
-                                .setCancelable(false)
-                                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        LADD.setVisibility(View.GONE);
-                                        LUPDATE.setVisibility(View.VISIBLE);
-                                        dialog.dismiss();
-                                    }
-
-                                })
-                                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-
-                                    }
-                                });
-
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
-                    }
-
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                0,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        VolleySingleton.getInstance(CheckerActivity.this).addToRequestQueue(stringRequest);
-    }
-
 
     private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode, double tareweight) {
         pd2.setTitle("Checker ...");
         pd2.setMessage("Saving Info !...");
         pd2.show();
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + "22" + "&CylinderCode=" + QRCode
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + "production/validateqr?ProductionOrder=" + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + preferenceHelper.getUserID() + "&CylinderCode=" + QRCode
                 , null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -511,27 +383,54 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                 boolean error = obj.getBoolean("Error");
                                 String message = obj.getString("Message");
 
-                                if (!error) {
+                                if (message.contains("Successfully")) {
                                     pd2.dismiss();
                                     Toast.makeText(CheckerActivity.this, message, Toast.LENGTH_SHORT).show();//updating the status in sqlite
                                     LUPDATE.setVisibility(View.GONE);
+                                    ETSerialNumber.setText("");
+                                    ETQRCode.setText("");
+                                    ETTare.setText("");
+                                    SP_Year.getItemAtPosition(-1);
+                                    SP_Month.getItemAtPosition(-1);
 
-                                }/* else {
-                                    btnUpdate.setVisibility(View.VISIBLE);*/
-                                  /*  String ProductionOrder = obj.getString("ProductionOrder");
+                                } else if (message.contains("No  Cylinder with")) {
+                                    new AlertDialog.Builder(CheckerActivity.this)
+                                            .setIcon(R.mipmap.ic_launcher)
+                                            .setTitle("No such cylinder Code")
+                                            .setMessage("")
+                                            .setCancelable(true)
+                                            .setPositiveButton("CHECK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            }).show();
+                                } else {
+
+
                                     String SerialNumber = obj.getString("SerialNumber");
                                     String TagQRCode = obj.getString("TagQRCode");
                                     String TagVisible = obj.getString("TagVisible");
-                                    String Year = obj.getString("Year");
-                                    String Month = obj.getString("Month");
                                     String EmptyWeight = obj.getString("EmptyWeight");
-                                    String CreatedBy = obj.getString("CreatedBy");
-                                    String CreatedDate = obj.getString("CreatedDate");
-                                    String UpdatedBy = obj.getString("UpdatedBy");
-                                    String UpdatedDate = obj.getString("UpdatedDate");*/
-                                //pd2.dismiss();
-                                // AlertDialogCreate(SerialNumber, "", "");
-                                //}
+                                    String Message = obj.getString("Message");
+                                    btnUpdate.setVisibility(View.VISIBLE);
+                                    LADD.setVisibility(View.GONE);
+                                    LUPDATE.setVisibility(View.VISIBLE);
+                                    ETSerialNumber.setText(SerialNumber);
+                                    ETQRCode.setText(TagQRCode);
+                                    ETTare.setText(EmptyWeight);
+                                    // dsg();
+                                    // AlertDialogCreate(SerialNumber, TagQRCode, EmptyWeight);
+                                    pd2.dismiss();
+
+
+                                }
 
 
                             }
@@ -543,27 +442,6 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                         }
                     }
 
-                    public void AlertDialogCreate(String serialNumber, String tagQRCode, String emptyWeight) {
-
-                        new AlertDialog.Builder(CheckerActivity.this)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle("Wrong Info")
-                                .setMessage("Cylinder information doesnt match checker info")
-                                .setPositiveButton("UPDATE", null)
-                                .setNegativeButton("Cancel", null)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                })
-                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                }).show();
-
-                    }
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -574,6 +452,37 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
         );
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
+    }
+
+
+
+
+
+
+    public void AlertDialogCreate(String serialNumber, String tagQRCode, String emptyWeight) {
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Wrong Info")
+                .setMessage("")
+                .setPositiveButton("UPDATE", null)
+                .setNegativeButton("Cancel", null)
+                .setCancelable(true)
+                .show();
+
+        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnUpdate.setVisibility(View.VISIBLE);
+                LADD.setVisibility(View.GONE);
+                LUPDATE.setVisibility(View.VISIBLE);
+                ETSerialNumber.setText(serialNumber);
+                ETQRCode.setText(tagQRCode);
+                ETTare.setText(emptyWeight);
+                dialog.dismiss();
+            }
+        });
+
+
     }
 
 
@@ -625,7 +534,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
-                params.put("UpdatedBy", "22");
+                params.put("UpdatedBy", preferenceHelper.getUserID());
 
 
                 return params;

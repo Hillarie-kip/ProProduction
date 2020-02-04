@@ -185,6 +185,7 @@
 
 
                 <EditText
+                    android:maxLength="6"
                     android:id="@+id/et_serialnumber"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -219,6 +220,8 @@
 
 
                 <EditText
+                    android:maxLength="10"
+
                     android:id="@+id/et_qr"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -252,6 +255,7 @@
 
 
                 <EditText
+                    android:maxLength="4"
                     android:id="@+id/et_tare"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

@@ -6,8 +6,8 @@ android {
         applicationId "com.protoenergy.proproduction"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 5
+        versionName "0.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         useLibrary 'org.apache.http.legacy'
     }
