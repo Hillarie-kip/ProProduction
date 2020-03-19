@@ -220,8 +220,7 @@
 
                 <EditText
                     android:fontFamily="@font/bree_serif"
-                    android:maxLength="10"
-
+                    android:maxLength="18"
                     android:text=""
                     android:id="@+id/et_qr"
                     android:layout_width="fill_parent"

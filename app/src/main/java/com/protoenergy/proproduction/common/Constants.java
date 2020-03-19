@@ -6,8 +6,13 @@ public class Constants {
         public static final String BASE_URL = "http://sync.protoenergy.com/api/";
         public static final String LOGIN = BASE_URL +"User/LoginProduction";
         public static final String GET_ORDERNUMBERS = BASE_URL +"production/ordernumbers";
-        public static final String URL_UPLOADMAKER = BASE_URL +"production/qrmaker";
-        public static final String URL_UPDATECHECKER = BASE_URL +"production/editqr";
+       /* public static final String URL_UPLOADMAKER = BASE_URL +"production/qrmaker";
+        public static final String URL_UPDATECHECKER = BASE_URL +"production/editqr";*/
+
+        public static final String URL_UPLOADMAKERV2 = BASE_URL +"production/qrmakerv2";
+        public static final String URL_UPDATECHECKERV2 = BASE_URL +"production/editqrv2";
+        public static final String URL_VALIDATEQRV2 = BASE_URL +"production/validateqrv2?ProductionOrder=";
+
 
     }
 

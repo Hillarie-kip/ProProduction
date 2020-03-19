@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.protoenergy.proproduction.common.Constants.URLs.GET_ORDERNUMBERS;
-import static com.protoenergy.proproduction.common.Constants.URLs.URL_UPLOADMAKER;
+import static com.protoenergy.proproduction.common.Constants.URLs.URL_UPLOADMAKERV2;
 
 public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
@@ -63,6 +63,8 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
     double tareweight;
     PreferenceHelper preferenceHelper;
 
+    String qrcode,visiblecode;
+    String[] separated;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,7 +162,8 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                 Toast.makeText(MakerActivity.this, "Serial Number is 6 digit", Toast.LENGTH_SHORT).show();
                             } else {
                                 SerialNumber = ETSerialNumber.getText().toString();
-                                if ((ETQRCode.getText().toString().length() != 10) && (ETQRCode.getText().toString().length() != 6)) {
+                                if ((ETQRCode.getText().toString().length() != 18) && (ETQRCode.getText().toString().length() != 17)) {
+
                                     Toast.makeText(MakerActivity.this, "Check the QR", Toast.LENGTH_SHORT).show();
                                 } else {
                                     QRCode = ETQRCode.getText().toString();
@@ -168,11 +171,22 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         Toast.makeText(MakerActivity.this, "Add Tare Weight", Toast.LENGTH_SHORT).show();
 
                                     } else {
+                                        String currentString = QRCode.trim();
+                                        if (QRCode.trim().length()==17){
+                                            separated = currentString.split(" ");
+                                        }
+                                        if (QRCode.trim().length()==18){
+                                            separated = currentString.split("  ");
+                                        }
+
+                                        qrcode=  separated[0];
+                                        visiblecode=  separated[1];
+
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
                                             if (tareweight >= 7.7 && tareweight <= 9.5) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 6 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -181,7 +195,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         if (MaterialDescription.contains("13KG")) {
 
                                             if (tareweight >= 12.0 && tareweight <= 14.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 13 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -190,7 +204,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         if (MaterialDescription.contains("50KG")) {
 
                                             if (tareweight >= 36.0 && tareweight <= 40.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, QRCode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -218,27 +232,26 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
 
     }
 
-    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode, double tareweight) {
+    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode,String VisibleCode, double tareweight) {
 
         progressDialog = new ProgressDialog(MakerActivity.this);
         progressDialog.setMessage("Saving Maker Data");
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOADMAKER,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPLOADMAKERV2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         try {
                             JSONObject obj = new JSONObject(response);
-                            boolean error = obj.getBoolean("Error");
-                            String message = obj.getString("Message");
+                            boolean error = obj.getBoolean("error");
+                            String message = obj.getString("message");
                             if (!error) {
                                 ETSerialNumber.setText("");
                                 ETQRCode.setText("");
                                 ETTare.setText("");
                                 SP_Year.getItemAtPosition(-1);
                                 SP_Month.getItemAtPosition(-1);
-
                                 Toast.makeText(MakerActivity.this, "" + message, Toast.LENGTH_SHORT).show();//updating the status in sqlite
 
                             } else {
@@ -282,7 +295,8 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                 Map<String, String> params = new HashMap<>();
                 params.put("ProductionOrder", String.valueOf(orderNumber));
                 params.put("SerialNumber", serialNumber);
-                params.put("CylinderCode", QRCode);
+                params.put("TagQRCode", QRCode);
+                params.put("TagVisible", VisibleCode);
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));

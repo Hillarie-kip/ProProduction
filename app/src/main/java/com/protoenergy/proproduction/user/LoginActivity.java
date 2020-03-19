@@ -69,19 +69,14 @@ public class LoginActivity extends AppCompatActivity {
 
         if (preferenceHelper.getIsLogin()) {
 
-            if (preferenceHelper.getWorkID().equals("1")) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            } else if (preferenceHelper.getWorkID().equals("2")) {
+
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
 
-            }
+
         }
 
 
