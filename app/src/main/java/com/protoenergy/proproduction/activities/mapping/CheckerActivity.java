@@ -72,7 +72,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
     Button btnClear1, btnClear2;
 
     String qrcode, visiblecode;
-    String [] separated;
+    String[] separated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,15 +193,15 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                 } else {
                                     QRCode = ETQRCode.getText().toString();
                                     String currentString = QRCode.trim();
-                                    if (QRCode.trim().length()==17){
+                                    if (QRCode.trim().length() == 17) {
                                         separated = currentString.split(" ");
                                     }
-                                    if (QRCode.trim().length()==18){
+                                    if (QRCode.trim().length() == 18) {
                                         separated = currentString.split("  ");
                                     }
 
-                                    qrcode=  separated[0];
-                                    visiblecode=  separated[1];
+                                    qrcode = separated[0];
+                                    visiblecode = separated[1];
 
                                     if (ETTare.getText().toString().isEmpty()) {
                                         Toast.makeText(CheckerActivity.this, "Add Tare weight", Toast.LENGTH_SHORT).show();
@@ -211,7 +211,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("6KG")) {
 
                                             if (tareweight >= 7.7 && tareweight <= 9.5) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6 kg", Toast.LENGTH_SHORT).show();
                                             }
@@ -220,7 +220,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("13KG")) {
 
                                             if (tareweight >= 12.0 && tareweight <= 14.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 13 kg", Toast.LENGTH_SHORT).show();
                                             }
@@ -229,7 +229,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("50KG")) {
 
                                             if (tareweight >= 36.0 && tareweight <= 40.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -323,14 +323,14 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                     QRCode = ETQRCode.getText().toString();
 
                                     String currentString = QRCode.trim();
-                                    if (QRCode.trim().length()==17){
+                                    if (QRCode.trim().length() == 17) {
                                         separated = currentString.split(" ");
                                     }
-                                    if (QRCode.trim().length()==18){
+                                    if (QRCode.trim().length() == 18) {
                                         separated = currentString.split("  ");
                                     }
-                                    qrcode=  separated[0];
-                                    visiblecode=  separated[1];
+                                    qrcode = separated[0];
+                                    visiblecode = separated[1];
                                     if (ETTare.getText().toString().isEmpty()) {
                                         Toast.makeText(CheckerActivity.this, "Add Tare weight", Toast.LENGTH_SHORT).show();
 
@@ -339,7 +339,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("6KG")) {
 
                                             if (tareweight >= 7.7 && tareweight <= 9.5) {
-                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 6KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -348,7 +348,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                         if (MaterialDescription.contains("13KG")) {
 
                                             if (tareweight >= 12.0 && tareweight <= 14.0) {
-                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 13KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -358,7 +358,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
 
 
                                             if (tareweight >= 36.0 && tareweight <= 40.0) {
-                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                UpdateQR(OrderNumber, Year, Month, SerialNumber, qrcode, visiblecode, tareweight);
                                             } else {
                                                 Toast.makeText(CheckerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -389,7 +389,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
     }
 
 
-    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode,String VisibleCode, double tareweight) {
+    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode, String VisibleCode, double tareweight) {
         pd2.setTitle("Checker ...");
         pd2.setMessage("Saving Info !...");
         pd2.show();
@@ -448,10 +448,11 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                                     LADD.setVisibility(View.GONE);
                                     LUPDATE.setVisibility(View.VISIBLE);
                                     ETSerialNumber.setText(SerialNumber);
-                                    ETQRCode.setText(TagQRCode);
+                                    ETQRCode.setText(TagQRCode+"  "+TagVisible);
                                     ETTare.setText(EmptyWeight);
+                                    
                                     // dsg();
-                                    // AlertDialogCreate(SerialNumber, TagQRCode, EmptyWeight);
+                                   // AlertDialogCreate(SerialNumber, TagQRCode, EmptyWeight);
                                     pd2.dismiss();
 
 
@@ -480,41 +481,49 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
     }
 
 
-    public void AlertDialogCreate(String serialNumber, String tagQRCode, String emptyWeight) {
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Wrong Info")
-                .setMessage("")
-                .setPositiveButton("UPDATE", null)
-                .setNegativeButton("Cancel", null)
-                .setCancelable(true)
-                .show();
+    private void AlertDialogCreate(String serialNumber, String tagQRCode, String emptyWeight) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CheckerActivity.this);
+        alertDialogBuilder.setTitle(R.string.app_name);
+        alertDialogBuilder.setMessage("Wrong Cylinder Info");
+        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface d, int id) {
+                        btnUpdate.setVisibility(View.VISIBLE);
+                        LADD.setVisibility(View.GONE);
+                        LUPDATE.setVisibility(View.VISIBLE);
+                        ETSerialNumber.setText(serialNumber);
+                        ETQRCode.setText(tagQRCode);
+                        ETTare.setText(emptyWeight);
+                        d.dismiss();
 
-        Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnUpdate.setVisibility(View.VISIBLE);
-                LADD.setVisibility(View.GONE);
-                LUPDATE.setVisibility(View.VISIBLE);
-                ETSerialNumber.setText(serialNumber);
-                ETQRCode.setText(tagQRCode);
-                ETTare.setText(emptyWeight);
-                dialog.dismiss();
-            }
-        });
+                    }
 
 
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface d, int id) {
+                        d.dismiss();
+
+
+                    }
+                });
+
+        // create alert dialog and show it
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 
-    private void UpdateQR(String orderNumber, String year, String month, String serialNumber, String QRCode,String VisibleCode, double tareweight) {
+    private void UpdateQR(String orderNumber, String year, String month, String serialNumber, String QRCode, String VisibleCode, double tareweight) {
         pd2.setMessage("Saving Maker Data");
         pd2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATECHECKERV2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("CHECKERUPDATE",response);
+                        Log.d("CHECKERUPDATE", response);
                         pd2.dismiss();
                         try {
                             JSONObject obj = new JSONObject(response);
@@ -552,11 +561,12 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                 Map<String, String> params = new HashMap<>();
                 params.put("ProductionOrder", String.valueOf(orderNumber));
                 params.put("SerialNumber", serialNumber);
-                params.put("CylinderCode", QRCode);
+                params.put("TagQRCode", QRCode);
+                params.put("TagVisible", VisibleCode);
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
-                params.put("UpdatedBy", preferenceHelper.getUserID());
+                params.put("UpdatedBy", String.valueOf(preferenceHelper.getUserID()));
 
 
                 return params;

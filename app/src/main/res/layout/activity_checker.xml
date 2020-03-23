@@ -194,7 +194,7 @@
                     android:fontFamily="@font/bree_serif"
                     android:hint="Serial Number"
                     android:inputType="number"
-                    android:text="" />
+                    android:text="123456" />
 
 
             </LinearLayout>
@@ -228,7 +228,7 @@
                     android:layout_marginRight="8dip"
                     android:fontFamily="@font/bree_serif"
                     android:hint="QR Code"
-                    android:text="" />
+                    android:text="e8qdr59u9Q  B7YMS9" />
 
 
             </LinearLayout>
@@ -255,6 +255,7 @@
 
                 <EditText
                     android:maxLength="4"
+                    android:text="8.1"
                     android:id="@+id/et_tare"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
