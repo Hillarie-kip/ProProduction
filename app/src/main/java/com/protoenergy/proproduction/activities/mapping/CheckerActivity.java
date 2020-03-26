@@ -398,7 +398,7 @@ public class CheckerActivity extends AppCompatActivity implements Spinner.OnItem
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject obj) {
-                        Log.d("CHECKERVALIDATE", String.valueOf(obj));
+                        Log.d("CHECKERVALIDATE", String.valueOf(URL_VALIDATEQRV2 + orderNumber + "&SerialNumber=" + serialNumber + "&Year=" + year + "&Month=" + month + "&EmptyWeight=" + tareweight + "&UpdatedBy=" + preferenceHelper.getUserID() + "&CylinderCode=" + QRCode));
 
                         try {
                             // Loop through the array elements
