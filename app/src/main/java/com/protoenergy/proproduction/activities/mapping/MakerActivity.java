@@ -49,7 +49,6 @@ import java.util.Map;
 
 
 import static com.protoenergy.proproduction.common.Constants.Params.KEY_ERROR;
-import static com.protoenergy.proproduction.common.Constants.Params.KEY_MESSAGE;
 import static com.protoenergy.proproduction.common.Constants.Params.KEY_MESSAGED;
 import static com.protoenergy.proproduction.common.Constants.Params.KEY_NETWORK;
 import static com.protoenergy.proproduction.common.Constants.URLs.GET_ORDERNUMBERS;
