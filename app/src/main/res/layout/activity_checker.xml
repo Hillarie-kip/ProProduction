@@ -220,8 +220,8 @@
 
                 <!--e8qdr59u9Q  B7YMS9-->
                 <EditText
-
-                    android:maxLength="18"
+                    android:maxLines="1"
+                    android:maxLength="25"
                     android:id="@+id/et_qr"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -229,7 +229,7 @@
                     android:layout_marginRight="8dip"
                     android:fontFamily="@font/bree_serif"
                     android:hint="QR Code"
-                    android:text="1A6H0DtqIk HFUOC6" />
+                    android:text="" />
 
 
             </LinearLayout>

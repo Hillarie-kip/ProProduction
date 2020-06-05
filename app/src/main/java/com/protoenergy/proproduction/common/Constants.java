@@ -9,9 +9,9 @@ public class Constants {
        /* public static final String URL_UPLOADMAKER = BASE_URL +"production/qrmaker";
         public static final String URL_UPDATECHECKER = BASE_URL +"production/editqr";*/
 
-        public static final String URL_UPLOADMAKERV2 = BASE_URL +"production/qrmakerv2";
-        public static final String URL_UPDATECHECKERV2 = BASE_URL +"production/editqrv2";
-        public static final String URL_VALIDATEQRV2 = BASE_URL +"production/validateqrv2?ProductionOrder=";
+        public static final String URL_UPLOADMAKERV2 = BASE_URL +"production/CeramicQRMaker";
+        public static final String URL_UPDATECHECKERV2 = BASE_URL +"production/CorrectCeramicQR";
+        public static final String URL_VALIDATEQRV2 = BASE_URL +"production/CeramicValidateQR?ProductionOrder=";
 
 
     }
@@ -20,6 +20,11 @@ public class Constants {
     public class Params {
         public static final String KEY_STATUS = "success";
         public static final String KEY_MESSAGE = "message";
+
+        public static final String KEY_ERROR = "Error";
+        public static final String KEY_MESSAGED = "Message";
+
+        public static final String KEY_NETWORK = "message";
 
         public static final String OBJ = "UserLoginData";
         public static final String USERID = "UserID";

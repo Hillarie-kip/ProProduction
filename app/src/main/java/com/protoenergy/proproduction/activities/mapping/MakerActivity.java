@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,10 +27,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.novoda.merlin.MerlinsBeard;
+import com.protoenergy.proproduction.MainActivity;
 import com.protoenergy.proproduction.R;
+import com.protoenergy.proproduction.user.LoginActivity;
 import com.protoenergy.proproduction.user.PreferenceHelper;
 import com.protoenergy.proproduction.user.VolleySingleton;
 
@@ -35,11 +41,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_ERROR;
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_MESSAGE;
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_MESSAGED;
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_NETWORK;
 import static com.protoenergy.proproduction.common.Constants.URLs.GET_ORDERNUMBERS;
+import static com.protoenergy.proproduction.common.Constants.URLs.LOGIN;
 import static com.protoenergy.proproduction.common.Constants.URLs.URL_UPLOADMAKERV2;
 
 public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
@@ -63,8 +77,8 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
     double tareweight;
     PreferenceHelper preferenceHelper;
 
-    String qrcode,visiblecode;
-    String[] separated;
+    String qrcode;
+    String separated;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +176,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                 Toast.makeText(MakerActivity.this, "Serial Number is 6 digit", Toast.LENGTH_SHORT).show();
                             } else {
                                 SerialNumber = ETSerialNumber.getText().toString();
-                                if ((ETQRCode.getText().toString().length() != 18) && (ETQRCode.getText().toString().length() != 17)) {
+                                if ((ETQRCode.getText().toString().trim().length() != 25) && (ETQRCode.getText().toString().trim().length() != 8)) {
 
                                     Toast.makeText(MakerActivity.this, "Check the QR", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -172,21 +186,21 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
 
                                     } else {
                                         String currentString = QRCode.trim();
-                                        if (QRCode.trim().length()==17){
-                                            separated = currentString.split(" ");
+                                        if (QRCode.trim().length()==25){
+                                            separated = currentString.replaceAll("www.pro.co.ke/ci/","");
                                         }
-                                        if (QRCode.trim().length()==18){
-                                            separated = currentString.split("  ");
+                                       else{
+                                            separated = QRCode.trim();
                                         }
 
-                                        qrcode=  separated[0];
-                                        visiblecode=  separated[1];
+                                        qrcode=  separated;
+
 
                                         tareweight = Double.parseDouble(ETTare.getText().toString());
                                         if (MaterialDescription.contains("6KG")) {
 
                                             if (tareweight >= 7.7 && tareweight <= 9.5) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 6 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -195,7 +209,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         if (MaterialDescription.contains("13KG")) {
 
                                             if (tareweight >= 12.0 && tareweight <= 14.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare weight of 13 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -204,7 +218,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                         if (MaterialDescription.contains("50KG")) {
 
                                             if (tareweight >= 36.0 && tareweight <= 40.0) {
-                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode,visiblecode, tareweight);
+                                                saveQR(OrderNumber, Year, Month, SerialNumber, qrcode, tareweight);
                                             } else {
                                                 Toast.makeText(MakerActivity.this, "wrong tare of 50 KG", Toast.LENGTH_SHORT).show();
                                             }
@@ -232,7 +246,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
 
     }
 
-    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode,String VisibleCode, double tareweight) {
+    private void saveQR(String orderNumber, String year, String month, String serialNumber, String QRCode, double tareweight) {
 
         progressDialog = new ProgressDialog(MakerActivity.this);
         progressDialog.setMessage("Saving Maker Data");
@@ -244,8 +258,8 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                         progressDialog.dismiss();
                         try {
                             JSONObject obj = new JSONObject(response);
-                            boolean error = obj.getBoolean("error");
-                            String message = obj.getString("message");
+                            boolean error = obj.getBoolean(KEY_ERROR);
+                            String message = obj.getString(KEY_MESSAGED);
                             if (!error) {
                                 ETSerialNumber.setText("");
                                 ETQRCode.setText("");
@@ -261,7 +275,7 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                 alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
                                 alertDialogBuilder.setMessage(message);
                                 alertDialogBuilder.setCancelable(false)
-                                        .setPositiveButton("ReCheck", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Check", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 dialog.dismiss();
                                             }
@@ -295,14 +309,11 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                 Map<String, String> params = new HashMap<>();
                 params.put("ProductionOrder", String.valueOf(orderNumber));
                 params.put("SerialNumber", serialNumber);
-                params.put("TagQRCode", QRCode);
-                params.put("TagVisible", VisibleCode);
+                params.put("CylinderCode", QRCode);
                 params.put("Month", month);
                 params.put("Year", year);
                 params.put("EmptyWeight", String.valueOf(tareweight));
                 params.put("CreatedBy", preferenceHelper.getUserID());
-
-
                 return params;
             }
         };
@@ -314,6 +325,85 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
 
         VolleySingleton.getInstance(MakerActivity.this).addToRequestQueue(stringRequest);
     }
+
+
+    private void saveQR2(String orderNumber, String year, String month, String serialNumber, String QRCode, double tareweight) {
+
+
+        JSONObject request = new JSONObject();
+        try {
+            //Populate the request parameters
+            request.put("ProductionOrder", String.valueOf(orderNumber));
+            request.put("SerialNumber", serialNumber);
+            request.put("CylinderCode", QRCode);
+            request.put("Month", month);
+            request.put("Year", year);
+            request.put("EmptyWeight", String.valueOf(tareweight));
+            request.put("CreatedBy", preferenceHelper.getUserID());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsArrayRequest = new JsonObjectRequest(Request.Method.POST, LOGIN, request, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("res", String.valueOf(response));
+
+                try {
+                    //Check if user got logged in successfully
+
+                    if (!response.getBoolean(KEY_ERROR)) {
+                        ETSerialNumber.setText("");
+                        ETQRCode.setText("");
+                        ETTare.setText("");
+                        SP_Year.getItemAtPosition(-1);
+                        SP_Month.getItemAtPosition(-1);
+                        Toast.makeText(MakerActivity.this, "" + response.getString(KEY_MESSAGED), Toast.LENGTH_SHORT).show();//updating the status in sqlite
+
+
+
+                    } else {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MakerActivity.this);
+                        alertDialogBuilder.setTitle("Wrong Cylinder Info!!");
+                        alertDialogBuilder.setMessage(response.getString(KEY_MESSAGED));
+                        alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
+                        alertDialogBuilder.setCancelable(false)
+                                .setPositiveButton("Check", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+
+                                })
+                                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+
+                                    }
+                                });
+
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(MakerActivity.this, KEY_NETWORK, Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+        // Access the RequestQueue through your singleton class.
+        VolleySingleton.getInstance(this).addToRequestQueue(jsArrayRequest);
+    }
+
+
 
     private void getData() {
         //Creating a string request
