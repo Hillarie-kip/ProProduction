@@ -176,11 +176,11 @@ public class MakerActivity extends AppCompatActivity implements Spinner.OnItemSe
                                 Toast.makeText(MakerActivity.this, "Serial Number is 6 digit", Toast.LENGTH_SHORT).show();
                             } else {
                                 SerialNumber = ETSerialNumber.getText().toString();
-                                if ((ETQRCode.getText().toString().trim().length() != 25) && (ETQRCode.getText().toString().trim().length() != 8)) {
-
-                                    Toast.makeText(MakerActivity.this, "Check the QR", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    QRCode = ETQRCode.getText().toString();
+                                int   LQRCode = ETQRCode.getText().toString().trim().length();
+                                if ((LQRCode != 25) && (LQRCode != 8)) {
+                                    Toast.makeText(MakerActivity.this, "Check the QR Code", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    QRCode = ETQRCode.getText().toString().trim();
                                     if (ETTare.getText().toString().isEmpty()) {
                                         Toast.makeText(MakerActivity.this, "Add Tare Weight", Toast.LENGTH_SHORT).show();
 
