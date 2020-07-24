@@ -222,6 +222,7 @@
                 <EditText
                     android:maxLines="1"
                     android:maxLength="25"
+                    android:inputType="text"
                     android:id="@+id/et_qr"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
