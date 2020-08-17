@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.protoenergy.proproduction.activities.filling.QRActivity;
 import com.protoenergy.proproduction.activities.mapping.CheckerActivity;
 import com.protoenergy.proproduction.activities.mapping.MakerActivity;
 import com.protoenergy.proproduction.user.LoginActivity;
@@ -23,7 +24,7 @@ import com.protoenergy.proproduction.user.PreferenceHelper;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView TxtUserName,TxtArea,TxtWork;
-    Button BTNMaker,BTNChecker;
+    Button BTNMaker,BTNChecker,BTNFilling;
     PreferenceHelper preferenceHelper;
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         BTNMaker = findViewById(R.id.btnMaker);
         BTNChecker = findViewById(R.id.btnChecker);
+        BTNFilling = findViewById(R.id.btnFilling);
 
 
         TxtUserName.setText(preferenceHelper.getFullName());
@@ -56,6 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, CheckerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        BTNFilling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, QRActivity.class);
                 startActivity(intent);
             }
         });
