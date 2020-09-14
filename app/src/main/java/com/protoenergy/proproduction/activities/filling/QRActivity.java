@@ -72,7 +72,7 @@ public class QRActivity extends AppCompatActivity {
 
     String OutletName, MaterialCode;
     String qrcode,visiblecode;
-    String[] separated;
+    String separated,QRCode;
     PreferenceHelper preferenceHelper;
     String tripday,transtime;
     @Override
@@ -104,10 +104,6 @@ public class QRActivity extends AppCompatActivity {
             TripID = tripday+"1";
         }
         GetOutletID=tripday;
-
-
-
-
         Log.d("SHIFTID", GetSaleID + " TripDay " + GetOutletID + " Product " + GetProduct + " CylinderSize " + CylinderSize);
 
 
@@ -153,10 +149,11 @@ public class QRActivity extends AppCompatActivity {
         BtnManualSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TVQR.getText().length() == 6 ||TVQR.getText().length() == 10) {
-
-                } else {
+                int   LQRCode = TVQR.getText().toString().trim().length();
+                if ((LQRCode != 25) && (LQRCode != 8)) {
                     Toast.makeText(QRActivity.this, "Invalid QRCODE", Toast.LENGTH_LONG).show();
+                } else {
+
                 }
             }
 
@@ -174,27 +171,25 @@ public class QRActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        int LQRCode;
 
+        LQRCode= TVQR.getText().toString().length();
 
-        handler.postDelayed(new Runnable() {
-            public void run() {
-
-
-                if ((TVQR.getText().length() == 17 ||(TVQR.getText().length() == 18))) {
-                    String qr = TVQR.getText().toString();
-                    String currentString = qr.trim();
-                    if(TVQR.getText().length() == 17){
-                        separated = currentString.split(" ");
-
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    QRCode=TVQR.getText().toString().trim();
+                    String currentString = QRCode.trim();
+                    if (QRCode.trim().length()==25){
+                        separated = currentString.replaceAll("www.pro.co.ke/ci/","");
                     }
-                    if(TVQR.getText().length() == 18){
-                         separated = currentString.split("  ");
-
+                    else{
+                        separated = QRCode.trim();
                     }
-                    Log.d("sepa", String.valueOf(separated));
 
-                    qrcode=  separated[0];
-                    visiblecode=  separated[1];
+                    qrcode=  separated;
+                    visiblecode=separated;
+
+                    Toast.makeText(QRActivity.this, ""+qrcode, Toast.LENGTH_SHORT).show();
 
                   /*  boolean recordExists = db.QrExistSold(qrcode,visiblecode);
                     if (recordExists) {
@@ -208,7 +203,7 @@ public class QRActivity extends AppCompatActivity {
 
                     }*/
 
-                }
+                    // }
             /*    if ((TVQR.getText().length() == 18)) {
                     String qr = TVQR.getText().toString();
                     String currentString = qr.trim();
@@ -232,14 +227,18 @@ public class QRActivity extends AppCompatActivity {
 
 
 
-                handler.postDelayed(this, delayinsert);
+                    handler.postDelayed(this, delayinsert);
 
-            }
-
-
+                }
 
 
-        }, delayinsert);
+
+
+            }, delayinsert);
+
+
+
+        
 
 
         if (ContextCompat.checkSelfPermission(QRActivity.this, Manifest.permission.CAMERA)

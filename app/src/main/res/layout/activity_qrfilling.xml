@@ -89,13 +89,13 @@
                 android:textColorHint="@color/colorPrimaryDark">
 
                 <com.google.android.material.textfield.TextInputEditText
-
+                    android:maxLength="25"
                     android:id="@+id/et_qr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="SCAN QR CODE HERE"
                     android:inputType="textPersonName"
-                    android:maxLength="18"
+
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp" />
             </com.google.android.material.textfield.TextInputLayout>
