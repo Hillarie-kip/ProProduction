@@ -12,10 +12,10 @@ public class Constants {
         public static final String URL_UPLOADMAKERV2 = BASE_URL +"production/CeramicQRMaker";
         public static final String URL_UPDATECHECKERV2 = BASE_URL +"production/CorrectCeramicQR";
         public static final String URL_VALIDATEQRV2 = BASE_URL +"production/CeramicValidateQR?ProductionOrder=";
+        public static final String URL_SAVEFILLINGQR = BASE_URL +"production/filling";
 
 
     }
-
     // webservice key constants
     public class Params {
         public static final String KEY_STATUS = "success";

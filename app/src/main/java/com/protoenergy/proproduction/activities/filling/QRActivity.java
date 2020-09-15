@@ -34,6 +34,7 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.protoenergy.proproduction.R;
 import com.protoenergy.proproduction.user.PreferenceHelper;
+import com.protoenergy.proproduction.user.VolleySingleton;
 
 
 import org.json.JSONException;
@@ -42,7 +43,9 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_ERROR;
+import static com.protoenergy.proproduction.common.Constants.Params.KEY_MESSAGE;
+import static com.protoenergy.proproduction.common.Constants.URLs.URL_SAVEFILLINGQR;
 
 
 public class QRActivity extends AppCompatActivity {
@@ -54,7 +57,7 @@ public class QRActivity extends AppCompatActivity {
     String TripID, GetOutletID, GetQR, GetQuantity, GetSaleID, GetProduct, GetSkuAmount, GetTotalQuantity;
 
     //DatabaseHelper db;
-    final int delayinsert = 1500; //milliseconds
+    final int delayinsert = 2500; //milliseconds
     String alreadyscanned = "You Have Already Scanned This Cylinder!";
     final Handler handler = new Handler();
     ProgressDialog progressDialog;
@@ -153,7 +156,17 @@ public class QRActivity extends AppCompatActivity {
                 if ((LQRCode != 25) && (LQRCode != 8)) {
                     Toast.makeText(QRActivity.this, "Invalid QRCODE", Toast.LENGTH_LONG).show();
                 } else {
-
+                    QRCode=TVQR.getText().toString().trim();
+                    String currentString = QRCode.trim();
+                    if (QRCode.trim().length()==25){
+                        separated = currentString.replaceAll("www.pro.co.ke/ci/","");
+                    }
+                    else{
+                        separated = QRCode.trim();
+                        qrcode=  separated;
+                        visiblecode=separated;
+                        savefillingqr(preferenceHelper.getUserID(),visiblecode);
+                    }
                 }
             }
 
@@ -186,22 +199,28 @@ public class QRActivity extends AppCompatActivity {
                         separated = QRCode.trim();
                     }
 
-                    qrcode=  separated;
-                    visiblecode=separated;
 
-                    Toast.makeText(QRActivity.this, ""+qrcode, Toast.LENGTH_SHORT).show();
+                        qrcode=  separated;
+                        visiblecode=separated;
+                        if (visiblecode.length()==8 ){
+                            savefillingqr(preferenceHelper.getUserID(),visiblecode);
+                        }
 
-                  /*  boolean recordExists = db.QrExistSold(qrcode,visiblecode);
+
+
+                  //  Toast.makeText(QRActivity.this, ""+qrcode, Toast.LENGTH_SHORT).show();
+
+                   /* boolean recordExists = db.QrExistSold(qrcode,visiblecode);
                     if (recordExists) {
                        Toast.makeText(QRActivity.this, "Cylinder Already Scanned ", Toast.LENGTH_SHORT).show();
                         TVCount.setText(String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
                         GetQuantity = (String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
                         TVQR.setText("");
                         TVQR.requestFocus();
-                    } else {
-                        savefillingqr(GetSaleID,TripID,GetOutletID,visiblecode,qrcode,"1",GetProduct,NOT_SYNCED_WITH_SERVEREDITABLE);
+                    } else {*/
 
-                    }*/
+
+                    //}
 
                     // }
             /*    if ((TVQR.getText().length() == 18)) {
@@ -238,7 +257,7 @@ public class QRActivity extends AppCompatActivity {
 
 
 
-        
+
 
 
         if (ContextCompat.checkSelfPermission(QRActivity.this, Manifest.permission.CAMERA)
@@ -249,15 +268,13 @@ public class QRActivity extends AppCompatActivity {
         }
     }
 
-/*
-    private void savefillingqr(String getSaleID, String tripID, String getOutletID, String visiblecode, String qrcode, String s, String getProduct, int notSyncedWithServereditable) {
+
+    private void savefillingqr(String userid, String visiblecode ) {
         JSONObject request = new JSONObject();
         try {
 
-            request.put("AssociatedActivityID", tripID);
-            request.put("QRCode", qrcode);
-            request.put("VisibleCode", visiblecode);
-            request.put("MovedBy", preferenceHelper.getUserID());
+            request.put("UserID", userid);
+            request.put("CylinderCode", visiblecode);
            // request.put("TerminalID", preferenceHelper.getContainerID());
 
 
@@ -265,18 +282,15 @@ public class QRActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL_SAVE_FILLINGQR, request, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL_SAVEFILLINGQR, request, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 Log.d("FillingQR", String.valueOf(response));
                 try {
                     //Check if user got logged in successfully
-                    if (!response.getBoolean(KEY_ERROR)) {
+                    if (!response.getBoolean("error")) {
                         Toast.makeText(QRActivity.this, ""+response.getString(KEY_MESSAGE), Toast.LENGTH_SHORT).show();
-                        db.addSoldQR(getSaleID, tripID, getOutletID, visiblecode, qrcode, s, getProduct, notSyncedWithServereditable);
-                        TVCount.setText(String.valueOf(db.getSoldQRSum(getOutletID,tripID, getProduct)));
-                        GetQuantity = (String.valueOf(db.getSoldQRSum(getOutletID,tripID, getProduct)));
                         TVQR.setText("");
                         TVQR.requestFocus();
                     }
@@ -316,7 +330,7 @@ public class QRActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getInstance(QRActivity.this).addToRequestQueue(jsonObjectRequest);
     }
-*/
+
 
     private void startScanning() {
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
