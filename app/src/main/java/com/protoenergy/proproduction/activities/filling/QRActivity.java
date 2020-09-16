@@ -71,19 +71,20 @@ public class QRActivity extends AppCompatActivity {
     int productpricesingle, totalquantitysingle, resultssingle;
 
     TextView totalamount;
-    int  CylinderSize;
+    int CylinderSize;
 
     String OutletName, MaterialCode;
-    String qrcode,visiblecode;
-    String separated,QRCode;
+    String qrcode, visiblecode;
+    String separated, QRCode;
     PreferenceHelper preferenceHelper;
-    String tripday,transtime;
+    String tripday, transtime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrfilling);
         progressDialog = new ProgressDialog(this);
-        preferenceHelper=new PreferenceHelper(this);
+        preferenceHelper = new PreferenceHelper(this);
         Intent intent = getIntent();
         GetSaleID = intent.getStringExtra("SaleID");
         GetOutletID = intent.getStringExtra("OutletID");
@@ -100,13 +101,12 @@ public class QRActivity extends AppCompatActivity {
         String transtime = full.format(cal.getTime());
 
         int houroftheday = cal.get(Calendar.HOUR_OF_DAY);
-        if (houroftheday>6 && houroftheday<19){
-            TripID = tripday+"0";
+        if (houroftheday > 6 && houroftheday < 19) {
+            TripID = tripday + "0";
+        } else {
+            TripID = tripday + "1";
         }
-        else {
-            TripID = tripday+"1";
-        }
-        GetOutletID=tripday;
+        GetOutletID = tripday;
         Log.d("SHIFTID", GetSaleID + " TripDay " + GetOutletID + " Product " + GetProduct + " CylinderSize " + CylinderSize);
 
 
@@ -120,8 +120,8 @@ public class QRActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
 
-               // TVCount.setText(String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
-               // GetQuantity = (String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
+                // TVCount.setText(String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
+                // GetQuantity = (String.valueOf(db.getSoldQRSum(GetOutletID,TripID, GetProduct)));
                 handler.postDelayed(this, delayinsert);
 
             }
@@ -152,25 +152,22 @@ public class QRActivity extends AppCompatActivity {
         BtnManualSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int   LQRCode = TVQR.getText().toString().trim().length();
+                int LQRCode = TVQR.getText().toString().trim().length();
                 if ((LQRCode != 25) && (LQRCode != 8)) {
                     Toast.makeText(QRActivity.this, "Invalid QRCODE", Toast.LENGTH_LONG).show();
                 } else {
-                    QRCode=TVQR.getText().toString().trim();
+                    QRCode = TVQR.getText().toString().trim();
                     String currentString = QRCode.trim();
-                    if (QRCode.trim().length()==25){
-                        separated = currentString.replaceAll("www.pro.co.ke/ci/","");
-                    }
-                    else{
+                    if (QRCode.trim().length() == 25) {
+                        separated = currentString.replaceAll("www.pro.co.ke/ci/", "");
+                    } else {
                         separated = QRCode.trim();
-                        qrcode=  separated;
-                        visiblecode=separated;
-                        savefillingqr(preferenceHelper.getUserID(),visiblecode);
+                        qrcode = separated;
+                        visiblecode = separated;
+                        savefillingqr(preferenceHelper.getUserID(), visiblecode);
                     }
                 }
             }
-
-
 
 
         });
@@ -186,29 +183,27 @@ public class QRActivity extends AppCompatActivity {
         });
         int LQRCode;
 
-        LQRCode= TVQR.getText().toString().length();
-
+        LQRCode = TVQR.getText().toString().length();
+        if (LQRCode == 25) {
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    QRCode=TVQR.getText().toString().trim();
+                    QRCode = TVQR.getText().toString().trim();
                     String currentString = QRCode.trim();
-                    if (QRCode.trim().length()==25){
-                        separated = currentString.replaceAll("www.pro.co.ke/ci/","");
-                    }
-                    else{
+                    if (QRCode.trim().length() == 25) {
+                        separated = currentString.replaceAll("www.pro.co.ke/ci/", "");
+                    } else {
                         separated = QRCode.trim();
                     }
 
 
-                        qrcode=  separated;
-                        visiblecode=separated;
-                        if (visiblecode.length()==8 ){
-                            savefillingqr(preferenceHelper.getUserID(),visiblecode);
-                        }
+                    qrcode = separated;
+                    visiblecode = separated;
+                    if (visiblecode.length() == 8) {
+                        savefillingqr(preferenceHelper.getUserID(), visiblecode);
+                    }
 
 
-
-                  //  Toast.makeText(QRActivity.this, ""+qrcode, Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(QRActivity.this, ""+qrcode, Toast.LENGTH_SHORT).show();
 
                    /* boolean recordExists = db.QrExistSold(qrcode,visiblecode);
                     if (recordExists) {
@@ -245,19 +240,13 @@ public class QRActivity extends AppCompatActivity {
                 }*/
 
 
-
                     handler.postDelayed(this, delayinsert);
 
                 }
 
 
-
-
             }, delayinsert);
-
-
-
-
+        }
 
 
         if (ContextCompat.checkSelfPermission(QRActivity.this, Manifest.permission.CAMERA)
@@ -269,14 +258,13 @@ public class QRActivity extends AppCompatActivity {
     }
 
 
-    private void savefillingqr(String userid, String visiblecode ) {
+    private void savefillingqr(String userid, String visiblecode) {
         JSONObject request = new JSONObject();
         try {
 
             request.put("UserID", userid);
             request.put("CylinderCode", visiblecode);
-           // request.put("TerminalID", preferenceHelper.getContainerID());
-
+            // request.put("TerminalID", preferenceHelper.getContainerID());
 
 
         } catch (JSONException e) {
@@ -290,22 +278,20 @@ public class QRActivity extends AppCompatActivity {
                 try {
                     //Check if user got logged in successfully
                     if (!response.getBoolean("error")) {
-                        Toast.makeText(QRActivity.this, ""+response.getString(KEY_MESSAGE), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QRActivity.this, "" + response.getString(KEY_MESSAGE), Toast.LENGTH_SHORT).show();
                         TVQR.setText("");
                         TVQR.requestFocus();
-                    }
-                    else {
+                    } else {
                         TVQR.setText("");
                         TVQR.requestFocus();
                         AlertDialog.Builder builder;
                         builder = new AlertDialog.Builder(QRActivity.this);
                         builder.setTitle("wrong cylinder info")
-                                .setMessage(""+response.getString(KEY_MESSAGE))
+                                .setMessage("" + response.getString(KEY_MESSAGE))
                                 .setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
-
 
 
                                 })
